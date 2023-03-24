@@ -1,7 +1,10 @@
 ﻿const express = require('express');
+//const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
-const app = express();
+
+//routers
 const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://test:test@jsfullstack.weq9kt2.mongodb.net/?retryWrites=true&w=majority',
     { useNewUrlParser: true,
@@ -9,7 +12,7 @@ mongoose.connect('mongodb+srv://test:test@jsfullstack.weq9kt2.mongodb.net/?retry
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-app.use(express.json());
+const app = express();
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,6 +21,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.json());
+//app.use(bodyParser.json());
+
 app.use('/api/stuff', stuffRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
